@@ -4,4 +4,5 @@ from django.views import View
 
 
 class MainView(View):
-    pass
+    def get(self, request):
+        return render(request, "photoalbum/content_page.html", locals())
