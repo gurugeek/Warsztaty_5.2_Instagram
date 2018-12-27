@@ -38,4 +38,5 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
+        labels = {'image': 'Zdjęcie profilowe'}
 
