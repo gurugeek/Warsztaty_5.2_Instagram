@@ -1,19 +1,42 @@
 {% extends "photoalbum/base.html" %}
+{% load photoalbum.extras %}
 
+{% load crispy_forms_tags %}
 {% block content %}
-
-<article class="media content-section">
-    <img class="rounded-circle article-img" src="#">
-    <div class="media-body">
-        <div class="article-metadata">
-            <a class="mr-2" href="#">nnnn</a>
-            <small class="text-muted">nnnn</small>
-        </div>
-        <a class="article-title" href="#">
-            <p class="article-content">nnnn</p>
-        </a>
-        <small class="text-muted">Komentarze: </small>
+        <div class="content-section">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" name="button" value="form_btn">Dodaj Insta</button>
+            </div>
+        </form>
     </div>
-</article>
-
-{% endblock %}
+        {% for photo in photos %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ photo.user.profile.image.url }}">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="">{{ photo.user }}</a>
+                    <small class="text-muted">{{ photo.creation_date|date:"F d, Y" }} </small>
+                </div>
+                <a class="article-title" href="">
+                    <img class="img-fluid" src="{{ photo.path.url }}"><br>
+                </a>
+                    <p class="article-content">{{ photo.content }}</p>
+                {% if not request.user.id in photo|likes_id %}
+                    <a class="btn btn-outline-info float-left" href="">Like</a>
+                    <a class="btn btn-outline-info float-right" href="">Comment</a>
+                {% else %}
+                    <p>Lubisz to zdjęcie!</p>
+                    <a class="btn btn-info float-right" href="">Not Like</a>
+                    <a class="btn btn-outline-info float-right" href="">Comment</a>
+                {% endif %}
+                <br><br>
+                <small class="text-muted">Ilość komentarzy: {{ photo|count_comments }}, LIKE: {{ photo|count_likes }}</small>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
