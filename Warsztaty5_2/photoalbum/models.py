@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 
 class Photo(models.Model):
     path = models.ImageField(upload_to='photos/')
@@ -11,6 +12,7 @@ class Photo(models.Model):
     def __str__(self):
         return f'{self.user} - {self.content[0:50]}'
 
+
 class Comment(models.Model):
     content = models.CharField(max_length=60)
     creation_date = models.DateTimeField(auto_now_add=True)
@@ -21,6 +23,7 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user} {self.photo} {self.content[0:50]}"
 
+
 class Likes(models.Model):
     like = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -29,6 +32,7 @@ class Likes(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.photo}: {self.like}"
+
 
 class Message(models.Model):
     content = models.TextField()

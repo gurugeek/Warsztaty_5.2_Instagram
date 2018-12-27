@@ -6,7 +6,7 @@ from .forms import PhotoAddForm
 from django.contrib import messages
 
 
-class MainView(LoginRequiredMixin, View):
+class MainView(View):
     class_form = PhotoAddForm
 
     def get(self, request):
