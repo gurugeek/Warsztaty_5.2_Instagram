@@ -113,7 +113,7 @@ class ShowPhotoView(LoginRequiredMixin, View):
         photo = get_object_or_404(Photo, id=id_photo, blocked=False)
         comments = Comment.objects.filter(photo_id=photo.id, blocked=False)
         form = AddCommentForm()
-        return render(request, "photoalbum/photo_detail.html", {'photo':photo, 'comments':comments, 'form':form})
+        return render(request, "photoalbum/photo_detail.html", {'photo': photo, 'comments': comments, 'form': form})
 
     def post(self, request, id_photo):
         photo = get_object_or_404(Photo, pk=id_photo)
@@ -124,3 +124,18 @@ class ShowPhotoView(LoginRequiredMixin, View):
             comment.save()
             messages.success(request, "Komentarz został dodany poprawnie")
         return redirect("show-photo", id_photo=id_photo)
+
+
+class AddLikeView(LoginRequiredMixin, View):
+    def get(self, request, id_photo):
+        like = Likes.objects.filter(user_id=request.user.id, photo_id=id_photo).first()
+        if like:
+            if like.like:
+                like.like = False
+            else:
+                like.like = True
+            like.save()
+        else:
+            new_like = Likes.objects.create(like=True, photo_id=id_photo, user_id=request.user.id)
+        return redirect(self.request.META.get('HTTP_REFERER'), '/')
+
