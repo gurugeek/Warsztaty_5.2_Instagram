@@ -22,9 +22,14 @@
             <div class="media-body">
                 <div class="article-metadata">
                     <a class="mr-2" href="{% url 'user-insta-detail' photo.user_id %}">{{ photo.user }}</a>
-                    <small class="text-muted">{{ photo.creation_date|date:"F d, Y" }} </small>
+                    <small class="text-muted">{{ photo.creation_date|date:"F d, Y" }}, </small>
                     {% if photo.user_id is not request.user.id %}
-                    <a class="btn-outline-info float-right btn-sm" href="">Śledź</a>
+                    {% if not request.user.id in photo.user|follow_id %}
+                    <a class="btn-outline-info float-right btn-sm" href="{% url 'add-follower' photo.user_id %}">Śledź</a>
+                    {% else %}
+                    <a class="btn-outline-info float-right btn-sm" href="{% url 'add-follower' photo.user_id %}">Nie śledź</a>
+                    {% endif %}
+                    <small class="text-muted">Ilość śledzących: {{ photo.user|count_followers }}</small>
                     <a class="btn-outline-info float-right btn-sm" href="{% url 'send-message-to-user' photo.user_id %}">Wyślij wiadomość</a>
                     {%  endif %}
                 </div>

@@ -57,6 +57,12 @@ class UserInstaDetailView(LoginRequiredMixin, View):
         return render(request, "photoalbum/user_insta_details.html", {'form': self.class_form, 'photos': photos})
 
 
+class FollowListView(LoginRequiredMixin, View):
+    def get(self, request):
+        follows = Follow.objects.filter(user_follower_id=self.request.user, follow=True)
+        return render(request, "photoalbum/follow_list.html", {'follows': follows})
+
+
 class UserReceivedMessagesView(LoginRequiredMixin, View):
     def get(self, request):
         id_user = request.user.id
@@ -148,3 +154,15 @@ class AddLikeView(LoginRequiredMixin, View):
         return redirect(self.request.META.get('HTTP_REFERER'), '/')
 
 
+class AddFollowerView(LoginRequiredMixin, View):
+    def get(self, request, user_id):
+        follow = Follow.objects.filter(user_follower_id=request.user.id, user_followed_id=user_id).first()
+        if follow:
+            if follow.follow:
+                follow.follow = False
+            else:
+                follow.follow = True
+            follow.save()
+        else:
+            new_follow = Follow.objects.create(follow=True, user_follower_id=request.user.id, user_followed_id=user_id)
+        return redirect(self.request.META.get('HTTP_REFERER'), '/')

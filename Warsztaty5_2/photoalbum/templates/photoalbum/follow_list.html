@@ -1,0 +1,16 @@
+{% extends "photoalbum/base.html" %}
+{% load photoalbum.extras %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+        {% for follow in follows %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ follow.user_followed.profile.image.url }}">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user-insta-detail' follow.user_followed.id %}">{{ follow.user_followed }}</a>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

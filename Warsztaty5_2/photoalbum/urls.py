@@ -12,4 +12,6 @@ urlpatterns = [
     path('photo/<int:id_photo>/', ShowPhotoView.as_view(), name='show-photo'),
     path('like/<int:id_photo>/', AddLikeView.as_view(), name='add-like'),
     path('user_insta/<int:user_id>/', UserInstaDetailView.as_view(), name='user-insta-detail'),
+    path('follow/<int:user_id>/', AddFollowerView.as_view(), name='add-follower'),
+    path('follow_list/', FollowListView.as_view(), name='follow-list'),
 ]
