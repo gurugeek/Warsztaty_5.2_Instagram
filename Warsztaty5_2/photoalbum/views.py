@@ -11,7 +11,7 @@ class MainView(View):
     class_form = PhotoAddForm
 
     def get(self, request):
-        photos = Photo.objects.order_by('-creation_date')
+        photos = Photo.objects.filter(blocked=False).order_by('-creation_date')
         return render(request, "photoalbum/content_page.html", {'form': self.class_form, 'photos': photos})
 
     def post(self, request):
@@ -32,7 +32,7 @@ class UserInstaView(LoginRequiredMixin, View):
     class_form = PhotoAddForm
 
     def get(self, request):
-        photos = Photo.objects.filter(user_id=self.request.user).order_by("-creation_date")
+        photos = Photo.objects.filter(blocked=False, user_id=self.request.user).order_by("-creation_date")
         return render(request, "photoalbum/content_page.html", {'form': self.class_form, 'photos': photos})
 
     def post(self, request):

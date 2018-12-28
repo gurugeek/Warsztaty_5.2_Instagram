@@ -28,7 +28,7 @@ class Likes(models.Model):
     like = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
-    deleted = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user} - {self.photo}: {self.like}"
