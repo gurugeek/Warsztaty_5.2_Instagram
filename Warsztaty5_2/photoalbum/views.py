@@ -49,6 +49,14 @@ class UserInstaView(LoginRequiredMixin, View):
         return render(request, "photoalbum/content_page.html", {'form': form, 'photos': photos})
 
 
+class UserInstaDetailView(LoginRequiredMixin, View):
+    class_form = PhotoAddForm
+
+    def get(self, request, user_id):
+        photos = Photo.objects.filter(blocked=False, user_id=user_id).order_by("-creation_date")
+        return render(request, "photoalbum/content_page.html", {'form': self.class_form, 'photos': photos})
+
+
 class UserReceivedMessagesView(LoginRequiredMixin, View):
     def get(self, request):
         id_user = request.user.id
@@ -138,4 +146,3 @@ class AddLikeView(LoginRequiredMixin, View):
         else:
             new_like = Likes.objects.create(like=True, photo_id=id_photo, user_id=request.user.id)
         return redirect(self.request.META.get('HTTP_REFERER'), '/')
-

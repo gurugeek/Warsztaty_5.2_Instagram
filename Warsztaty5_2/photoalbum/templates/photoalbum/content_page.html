@@ -21,10 +21,10 @@
             <img class="rounded-circle article-img" src="{{ photo.user.profile.image.url }}">
             <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="">{{ photo.user }}</a>
+                    <a class="mr-2" href="{% url 'user-insta-detail' photo.user_id %}">{{ photo.user }}</a>
                     <small class="text-muted">{{ photo.creation_date|date:"F d, Y" }} </small>
                 </div>
-                <a class="article-title" href="">
+                <a class="article-title" href="{% url 'show-photo' photo.id %}">
                     <img class="img-fluid" src="{{ photo.path.url }}"><br>
                 </a>
                     <p class="article-content">{{ photo.content }}</p>
