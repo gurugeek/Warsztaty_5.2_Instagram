@@ -20,3 +20,9 @@ class SendMessageToUserForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['content']
+
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

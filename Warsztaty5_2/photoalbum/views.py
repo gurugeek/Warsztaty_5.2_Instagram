@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
-from .forms import PhotoAddForm, SendMessageForm, SendMessageToUserForm
+from .forms import PhotoAddForm, SendMessageForm, SendMessageToUserForm, AddCommentForm
 from .models import *
 
 
@@ -106,3 +106,21 @@ class SendMessageToUserView(LoginRequiredMixin, View):
             message_sent.save()
             messages.success(request, "Wiadomość wysłana")
         return redirect("main")
+
+
+class ShowPhotoView(LoginRequiredMixin, View):
+    def get(self, request, id_photo):
+        photo = get_object_or_404(Photo, id=id_photo, blocked=False)
+        comments = Comment.objects.filter(photo_id=photo.id, blocked=False)
+        form = AddCommentForm()
+        return render(request, "photoalbum/photo_detail.html", {'photo':photo, 'comments':comments, 'form':form})
+
+    def post(self, request, id_photo):
+        photo = get_object_or_404(Photo, pk=id_photo)
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            comment = Comment(content=content, photo=photo, user=request.user, blocked=False)
+            comment.save()
+            messages.success(request, "Komentarz został dodany poprawnie")
+        return redirect("show-photo", id_photo=id_photo)

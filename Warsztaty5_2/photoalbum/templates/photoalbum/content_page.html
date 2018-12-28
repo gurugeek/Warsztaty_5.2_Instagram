@@ -28,11 +28,11 @@
                     <p class="article-content">{{ photo.content }}</p>
                 {% if not request.user.id in photo|likes_id %}
                     <a class="btn btn-outline-info float-left" href="">Polajkuj</a>
-                    <a class="btn btn-outline-info float-right" href="">Skomentuj</a>
+                    <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
                 {% else %}
                     <p>Lubisz to zdjęcie!</p>
                     <a class="btn btn-info float-right" href="">Odlajkuj</a>
-                    <a class="btn btn-outline-info float-right" href="">Skomentuj</a>
+                    <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
                 {% endif %}
                 <br><br>
                 <small class="text-muted">Ilość komentarzy: {{ photo|count_comments }}, LIKE: {{ photo|count_likes }}</small>

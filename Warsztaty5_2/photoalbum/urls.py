@@ -9,4 +9,5 @@ urlpatterns = [
     path('message_detail/<int:id_message>/', MessageDetailView.as_view(), name='message-details'),
     path('send_message/', SendMessageView.as_view(), name='send-message'),
     path('send_message/<int:user_id>', SendMessageToUserView.as_view(), name='send-message-to-user'),
+    path('photo/<int:id_photo>/', ShowPhotoView.as_view(), name='show-photo'),
 ]
