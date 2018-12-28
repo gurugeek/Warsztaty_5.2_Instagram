@@ -33,7 +33,7 @@
                     <a class="btn btn-outline-info float-left" href="{% url 'add-like' photo.id %}">Polajkuj</a>
                     <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
                 {% else %}
-                    <p>Lubisz to zdjęcie!</p>
+                    <h4>Lubisz to zdjęcie!</h4>
                     <a class="btn btn-info float-right" href="{% url 'add-like' photo.id %}">Odlajkuj</a>
                     <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
                 {% endif %}
