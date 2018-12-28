@@ -1,0 +1,50 @@
+{% extends "photoalbum/base.html" %}
+{% load photoalbum.extras %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+        {% if user.is_authenticated %}
+        <div class="content-section">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" name="button" value="form_btn">Dodaj Insta</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+        {% for photo in photos %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ photo.user.profile.image.url }}">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user-insta-detail' photo.user_id %}">{{ photo.user }}</a>
+                    <small class="text-muted">{{ photo.creation_date|date:"F d, Y" }} </small>
+                    {% if photo.user_id is not request.user.id %}
+                    <a class="btn-outline-info float-right btn-sm" href="">Śledź</a>
+                    <a class="btn-outline-info float-right btn-sm" href="{% url 'send-message-to-user' photo.user_id %}">Wyślij wiadomość</a>
+                    {%  endif %}
+                </div>
+                <a class="article-title" href="{% url 'show-photo' photo.id %}">
+                    <img class="img-fluid" src="{{ photo.path.url }}"><br>
+                </a>
+                    <p class="article-content">{{ photo.content }}</p>
+                {% if user.is_authenticated %}
+                {% if not request.user.id in photo|likes_id %}
+                    <a class="btn btn-outline-info float-left" href="{% url 'add-like' photo.id %}">Polajkuj</a>
+                    <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
+                {% else %}
+                    <h4>Lubisz to zdjęcie!</h4>
+                    <a class="btn btn-info float-right" href="{% url 'add-like' photo.id %}">Odlajkuj</a>
+                    <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
+                {% endif %}
+                {% endif %}
+                <br><br>
+                <small class="text-muted">Ilość komentarzy: {{ photo|count_comments }}, LIKE: {{ photo|count_likes }}</small>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

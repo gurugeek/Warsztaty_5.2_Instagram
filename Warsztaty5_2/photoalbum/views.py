@@ -54,7 +54,7 @@ class UserInstaDetailView(LoginRequiredMixin, View):
 
     def get(self, request, user_id):
         photos = Photo.objects.filter(blocked=False, user_id=user_id).order_by("-creation_date")
-        return render(request, "photoalbum/content_page.html", {'form': self.class_form, 'photos': photos})
+        return render(request, "photoalbum/user_insta_details.html", {'form': self.class_form, 'photos': photos})
 
 
 class UserReceivedMessagesView(LoginRequiredMixin, View):
