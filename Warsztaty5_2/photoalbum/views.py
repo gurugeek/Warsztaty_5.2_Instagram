@@ -146,3 +146,5 @@ class AddLikeView(LoginRequiredMixin, View):
         else:
             new_like = Likes.objects.create(like=True, photo_id=id_photo, user_id=request.user.id)
         return redirect(self.request.META.get('HTTP_REFERER'), '/')
+
+

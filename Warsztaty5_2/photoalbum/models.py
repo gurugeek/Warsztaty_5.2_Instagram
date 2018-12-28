@@ -44,3 +44,12 @@ class Message(models.Model):
 
     def __str__(self):
         return f"To: {self.sent_to}, From: {self.sent_from}, Text: {self.content[0:30]}"
+
+
+class Follow(models.Model):
+    follow = models.BooleanField()
+    user_follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
+    user_followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed")
+
+    def __str__(self):
+        return f"{self.follower} - {self.followed}: {self.follow}"
