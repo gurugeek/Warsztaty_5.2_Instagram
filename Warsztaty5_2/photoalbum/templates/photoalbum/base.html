@@ -23,7 +23,8 @@
                         <span class="navbar-toggler-icon"></span>
                       </button>
                       <div class="collapse navbar-collapse" id="navbarToggle">
-                    <a class="nav-item nav-link" href="{% url 'user-insta' %}">Twoje Insta </a>
+
+                    <a class="nav-item nav-link" href="{% url 'user-insta' %}">Twoje Insta {{ user.email }}</a>
                     <a class="nav-item nav-link" href="{%  url 'messages-received' %}">Wiadomości </a>
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Konto </a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
