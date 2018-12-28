@@ -3,6 +3,7 @@
 
 {% load crispy_forms_tags %}
 {% block content %}
+        {% if user.is_authenticated %}
         <div class="content-section">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -14,6 +15,7 @@
             </div>
         </form>
     </div>
+    {% endif %}
         {% for photo in photos %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ photo.user.profile.image.url }}">
@@ -26,6 +28,7 @@
                     <img class="img-fluid" src="{{ photo.path.url }}"><br>
                 </a>
                     <p class="article-content">{{ photo.content }}</p>
+                {% if user.is_authenticated %}
                 {% if not request.user.id in photo|likes_id %}
                     <a class="btn btn-outline-info float-left" href="{% url 'add-like' photo.id %}">Polajkuj</a>
                     <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
@@ -33,6 +36,7 @@
                     <p>Lubisz to zdjęcie!</p>
                     <a class="btn btn-info float-right" href="{% url 'add-like' photo.id %}">Odlajkuj</a>
                     <a class="btn btn-outline-info float-right" href="{% url 'show-photo' photo.id %}">Skomentuj</a>
+                {% endif %}
                 {% endif %}
                 <br><br>
                 <small class="text-muted">Ilość komentarzy: {{ photo|count_comments }}, LIKE: {{ photo|count_likes }}</small>
